@@ -22,16 +22,17 @@ class neural_network(self, input_size, output_size, number_hidden_layers, hidden
         self.input_layer = np.array(input_size)
         self.output_layer = np.array(output_size)
         for i in range(number_hidden_layers):
-            self.hidden = fully_connected_layer(hidden_layer_size, hidden_layer_size)
+            self.hidden[i] = fully_connected_layer(hidden_layer_size, hidden_layer_size)
 
     def train():
 
-    def predict():
-        
-        output = 
+    def predict(self, input):
+        output = input
+        for i in range(number_hidden_layers):
+            output *= max(0, self.hidden[i].weights*output+bias)
 
 
 
 nn = neural_network(INPUT_SIZE, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE)
 
-
+prediction = nn.predict(data)
