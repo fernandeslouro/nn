@@ -7,25 +7,31 @@ HIDDEN_LAYER_SIZE = 50
 
 class fully_connected_layer(self, previous_size, layer_size):
     def __init__(self):
-        self.weights = np.random(previous_size * layer_size)
+        self.weights = np.random([previous_size, layer_size])
         self.bias = np.random(layer_size)
         self.output = np.random(layer_size)
-        
+    
+    def calculate_output(self, previous_output):
+        output = previous_output * self.weights + self.bias
+        return output
 
-class neural_network(self, INPUT_SIZE, output_size, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE):
+    def backward_pass():
+
+class neural_network(self, input_size, output_size, number_hidden_layers, hidden_layer_size):
     def __init__(self):
-        self.input_layer = np.array(IMPUT_SIZE)
-        self.output_layer = np.array(OUTPUT_SIZE)
-        
+        self.input_layer = np.array(input_size)
+        self.output_layer = np.array(output_size)
+        for i in range(number_hidden_layers):
+            self.hidden = fully_connected_layer(hidden_layer_size, hidden_layer_size)
+
     def train():
 
+    def predict():
+        
+        output = 
 
 
 
-input_layer = np.array(IMPUT_SIZE)
+nn = neural_network(INPUT_SIZE, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE)
 
-for i in range(NUMBER_HIDDEN_LAYERS):
-    lay = fully_connected_layer(HIDDEN_LAYER_SIZE, HIDDEN_LAYER_SIZE)
-
-output_layer = np.array(OUTPUT_SIZE)
 
