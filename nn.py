@@ -1,15 +1,16 @@
 import numpy as np
 
-INPUT_SIZE = 28 * 28
+INPUT_SIZE = 16
 OUTPUR_SIZE = 10
-NUMBER_HIDDEN_LAYERS = 2
-HIDDEN_LAYER_SIZE = 16
+NUMBER_HIDDEN_LAYERS = 3
+HIDDEN_LAYER_SIZE = 50
 
 # The backpropagation algorithm works by computing the gradient of the loss function with respect to each weight by the chain rule, computing the gradient one layer at a time, iterating backward from the last layer to avoid redundant calculations of intermediate terms in the chain rule
 
 
 def cross_entropy_loss(batch_truth, batch_predictions):
     return -1/len(batch_truth) * np.inner((batch_truth, np.log(batch_predictions))
+
 
 class fully_connected_layer(self, previous_size, layer_size):
     def __init__(self):
@@ -21,7 +22,13 @@ class fully_connected_layer(self, previous_size, layer_size):
         output = previous_output * self.weights + self.bias
         return output
 
-    def backward_pass():
+    def backpropagate_batch(self, batch_data):
+        for entry in batch_data:
+            batch_output.append(self.calculate_output(entry))
+        batch_error = cross_entropy_loss(batch_data.labels, batch_output)
+
+
+
 
 class neural_network(self, input_size, output_size, number_hidden_layers, hidden_layer_size):
     def __init__(self):
@@ -43,9 +50,11 @@ class neural_network(self, input_size, output_size, number_hidden_layers, hidden
         prediction = softmax(prediction)
 
 
-
 nn = neural_network(INPUT_SIZE, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE)
 
 nn.train(train_data)
 
 prediction = nn.predict(test_data)
+
+
+
