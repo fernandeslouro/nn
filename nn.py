@@ -5,7 +5,10 @@ import torch
 import torchvision
 from utilities import cross_entropy_loss, neural_network
 
-INPUT_SIZE = 16
+%load_ext autoreload
+%autoreload 2
+
+INPUT_SIZE = 28
 OUTPUT_SIZE = 10
 NUMBER_HIDDEN_LAYERS = 3
 HIDDEN_LAYER_SIZE = 50
@@ -32,12 +35,15 @@ example = iter(train_loader).next()
 
 # %%
 # The backpropagation algorithm works by computing the gradient of the loss function with respect to each weight by the chain rule, computing the gradient one layer at a time, iterating backward from the last layer to avoid redundant calculations of intermediate terms in the chain rule
-
-criterion = cross_entropy_loss()
+image = example[0][0][0].numpy()
+print(image)
+criterion = cross_entropy_loss
 #optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-
 nn = neural_network(INPUT_SIZE, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE)
+
+prediction = nn.predict(image)
+
 # %%
 for epoch in range(50):  # loop over the dataset multiple times
     running_loss = 0.0
@@ -62,7 +68,6 @@ for epoch in range(50):  # loop over the dataset multiple times
 
 
 # %%
-prediction = nn.predict(iter(train_loader).next())
 
 
 
