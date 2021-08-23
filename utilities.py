@@ -18,7 +18,10 @@ class fully_connected_layer():
         self.output_layer = np.random.rand(self.layer_size)
     
     def calculate_output(self, previous_output):
-        output = previous_output * self.weights + self.bias
+        mult = np.matmul(self.weights.transpose(), np.expand_dims(previous_output, axis=1))
+        summation = mult + np.expand_dims(self.bias, axis=1)
+        output = np.maximum(0, summation)
+        print(f"OUTPUT - {output.shape}")
         return output
 
     def backpropagate_batch(self, batch_data):
@@ -39,13 +42,18 @@ class neural_network():
 
         self.hidden = [] 
         for i in range(self.number_hidden_layers):
-            self.hidden.append(fully_connected_layer(self.hidden_layer_size, self.hidden_layer_size))
+            if i == 0:
+                self.hidden.append(fully_connected_layer(self.input_size, self.hidden_layer_size))
+            if i == self.number_hidden_layers:
+                self.hidden.append(fully_connected_layer(self.hidden_layer_size, self.output_size))
+            else:
+                self.hidden.append(fully_connected_layer(self.hidden_layer_size, self.hidden_layer_size))
 
     def predict(self, input_values):
-        prediction = input_values
+        prediction = input_values.flatten()
         for i in range(self.number_hidden_layers):
-            print(len(self.hidden[i].weights), len(prediction), len(self.hidden[i].bias))
-            prediction *= max(0, self.hidden[i].weights*prediction+self.hidden[i].bias)
-        prediction *= max(0, self.output_layer.weights*prediction+self.hidden[i].bias)
+            prediction = self.hidden[i].calculate_output(prediction)
+            print(f"LAYER {i+1}")
+        prediction *= max(0, np.matmul(self.output_layer.weights, prediction) + self.hidden[i].bias)
         prediction = softmax(prediction)
         return prediction
