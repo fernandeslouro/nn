@@ -5,11 +5,7 @@ def cross_entropy_loss(batch_truth, batch_predictions):
     return -1/len(batch_truth) * np.inner((batch_truth, np.log(batch_predictions)))  
 
 def softmax(inputs):
-    print(inputs)
     return np.exp(inputs)/np.sum(np.exp(inputs))
-
-
-
 
 class fully_connected_layer():
     def __init__(self, previous_size, layer_size):
@@ -20,12 +16,9 @@ class fully_connected_layer():
         self.output_layer = np.random.rand(self.layer_size)
     
     def calculate_output(self, previous_output):
-        print(self.weights.transpose().shape, previous_output.shape)
         mult = np.matmul(self.weights.transpose(), previous_output)
-        print(mult.shape, self.bias.shape)
         summation = mult + self.bias
         output = np.maximum(0, summation)
-        print(f"OUTPUT - {output.shape}")
         return output
 
     def backpropagate_batch(self, batch_data):
@@ -56,6 +49,5 @@ class neural_network():
         prediction = np.expand_dims(input_values.flatten(), axis=1)
         for i, hidden_layer in enumerate(self.hidden):
             prediction = hidden_layer.calculate_output(prediction)
-            print(f"LAYER {i+1}")
         prediction = softmax(prediction)
         return prediction

@@ -11,7 +11,7 @@ from utilities import cross_entropy_loss, neural_network
 IMAGE_SIZE = 28
 OUTPUT_SIZE = 10
 NUMBER_HIDDEN_LAYERS = 3
-HIDDEN_LAYER_SIZE = 50
+HIDDEN_LAYER_SIZE = 100
 BATCH_SIZE = 10
 
 trans = torchvision.transforms.Compose([torchvision.transforms.ToTensor(), 
@@ -42,8 +42,6 @@ criterion = cross_entropy_loss
 nn = neural_network(IMAGE_SIZE**2, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE)
 
 prediction = nn.predict(image)
-print(prediction)
-print(prediction.shape)
 
 # %%
 for epoch in range(50):  # loop over the dataset multiple times
@@ -65,10 +63,6 @@ for epoch in range(50):  # loop over the dataset multiple times
         print('[%d] loss: %.3f' % (i + 1, loss.item()))
 
     print(f"==== EPOCH LOSS: {running_loss/(i+1)}")
-
-
-
-# %%
 
 
 
