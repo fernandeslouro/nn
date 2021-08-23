@@ -12,7 +12,8 @@ class fully_connected_layer():
         self.previous_size = previous_size
         self.layer_size = layer_size
         self.weights = np.random.rand(self.previous_size, self.layer_size)
-        self.bias = np.expand_dims(np.random.rand(self.layer_size), axis=1)
+        #self.bias = np.expand_dims(np.random.rand(self.layer_size), axis=1)
+        self.bias = np.ones([layer_size,1])*0.1
         self.output_layer = np.random.rand(self.layer_size)
     
     def calculate_output(self, previous_output):
