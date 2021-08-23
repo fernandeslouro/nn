@@ -5,8 +5,10 @@ def cross_entropy_loss(batch_truth, batch_predictions):
     return -1/len(batch_truth) * np.inner((batch_truth, np.log(batch_predictions)))  
 
 def softmax(inputs):
-    # to implement
-    return inputs
+    print(inputs)
+    return np.exp(inputs)/np.sum(np.exp(inputs))
+
+
 
 
 class fully_connected_layer():
@@ -45,15 +47,15 @@ class neural_network():
         for i in range(self.number_hidden_layers):
             if i == 0:
                 self.hidden.append(fully_connected_layer(self.input_size, self.hidden_layer_size))
-            if i == self.number_hidden_layers:
+            if i == self.number_hidden_layers-1:
                 self.hidden.append(fully_connected_layer(self.hidden_layer_size, self.output_size))
             else:
                 self.hidden.append(fully_connected_layer(self.hidden_layer_size, self.hidden_layer_size))
 
     def predict(self, input_values):
         prediction = np.expand_dims(input_values.flatten(), axis=1)
-        for i, hidden_layer in enumerate(self.hidden_layers)+1:
-            prediction = self.hidden[i].calculate_output(prediction)
+        for i, hidden_layer in enumerate(self.hidden):
+            prediction = hidden_layer.calculate_output(prediction)
             print(f"LAYER {i+1}")
         prediction = softmax(prediction)
         return prediction
