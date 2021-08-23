@@ -1,10 +1,35 @@
+# %%
+
 import numpy as np
+import torch
+import torchvision
 
 INPUT_SIZE = 16
 OUTPUR_SIZE = 10
 NUMBER_HIDDEN_LAYERS = 3
 HIDDEN_LAYER_SIZE = 50
+BATCH_SIZE = 10
 
+trans = torchvision.transforms.Compose([torchvision.transforms.ToTensor(), 
+                torchvision.transforms.Normalize((0.5,), (1.0,))])
+
+train_set = torchvision.datasets.MNIST(root=".", train=True, transform=trans, download=True)
+test_set = torchvision.datasets.MNIST(root=".", train=False, transform=trans, download=True)
+# %%
+# these loades will output a list of 2 elements, each of them a 
+# torch tenson (batch size x picture, batch size x number)
+train_loader = torch.utils.data.DataLoader(
+                 dataset=train_set,
+                 batch_size=BATCH_SIZE,
+                 shuffle=True)
+test_loader = torch.utils.data.DataLoader(
+                dataset=test_set,
+                batch_size=BATCH_SIZE,
+                shuffle=False)
+
+example = iter(train_loader).next()
+
+# %%
 # The backpropagation algorithm works by computing the gradient of the loss function with respect to each weight by the chain rule, computing the gradient one layer at a time, iterating backward from the last layer to avoid redundant calculations of intermediate terms in the chain rule
 
 
@@ -26,9 +51,6 @@ class fully_connected_layer(self, previous_size, layer_size):
         for entry in batch_data:
             batch_output.append(self.calculate_output(entry))
         batch_error = cross_entropy_loss(batch_data.labels, batch_output)
-
-
-
 
 class neural_network(self, input_size, output_size, number_hidden_layers, hidden_layer_size):
     def __init__(self):
@@ -58,3 +80,4 @@ prediction = nn.predict(test_data)
 
 
 
+# %%
