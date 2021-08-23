@@ -39,6 +39,6 @@ class neural_network():
     def predict(self, input_values):
         prediction = input_values
         for i in range(self.number_hidden_layers):
-            prediction *= max(0, self.hidden[i].weights*prediction+self.bias)
-        prediction *= max(0, self.output_layer.weights*prediction+self.bias)
+            prediction *= max(0, self.hidden[i].weights*prediction+self.hidden[i].bias)
+        prediction *= max(0, self.output_layer.weights*prediction+self.hidden[i].bias)
         #prediction = softmax(prediction)

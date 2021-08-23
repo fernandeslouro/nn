@@ -11,7 +11,7 @@ from utilities import cross_entropy_loss, neural_network
 INPUT_SIZE = 28
 OUTPUT_SIZE = 10
 NUMBER_HIDDEN_LAYERS = 3
-HIDDEN_LAYER_SIZE = 50
+HIDDEN_LAYER_SIZE = 28
 BATCH_SIZE = 10
 
 trans = torchvision.transforms.Compose([torchvision.transforms.ToTensor(), 
