@@ -4,6 +4,11 @@ import numpy as np
 def cross_entropy_loss(batch_truth, batch_predictions):
     return -1/len(batch_truth) * np.inner((batch_truth, np.log(batch_predictions)))  
 
+def softmax(inputs):
+    # to implement
+    return inputs
+
+
 class fully_connected_layer():
     def __init__(self, previous_size, layer_size):
         self.previous_size = previous_size
@@ -39,6 +44,8 @@ class neural_network():
     def predict(self, input_values):
         prediction = input_values
         for i in range(self.number_hidden_layers):
+            print(len(self.hidden[i].weights), len(prediction), len(self.hidden[i].bias))
             prediction *= max(0, self.hidden[i].weights*prediction+self.hidden[i].bias)
         prediction *= max(0, self.output_layer.weights*prediction+self.hidden[i].bias)
-        #prediction = softmax(prediction)
+        prediction = softmax(prediction)
+        return prediction
