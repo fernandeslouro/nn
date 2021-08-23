@@ -14,12 +14,14 @@ class fully_connected_layer():
         self.previous_size = previous_size
         self.layer_size = layer_size
         self.weights = np.random.rand(self.previous_size, self.layer_size)
-        self.bias = np.random.rand(self.layer_size)
+        self.bias = np.expand_dims(np.random.rand(self.layer_size), axis=1)
         self.output_layer = np.random.rand(self.layer_size)
     
     def calculate_output(self, previous_output):
-        mult = np.matmul(self.weights.transpose(), np.expand_dims(previous_output, axis=1))
-        summation = mult + np.expand_dims(self.bias, axis=1)
+        print(self.weights.transpose().shape, previous_output.shape)
+        mult = np.matmul(self.weights.transpose(), previous_output)
+        print(mult.shape, self.bias.shape)
+        summation = mult + self.bias
         output = np.maximum(0, summation)
         print(f"OUTPUT - {output.shape}")
         return output
@@ -38,7 +40,6 @@ class neural_network():
         self.input_layer = np.array(input_size)
         self.number_hidden_layers = np.array(number_hidden_layers)
         self.hidden_layer_size = np.array(hidden_layer_size)
-        self.output_layer = np.array(output_size)
 
         self.hidden = [] 
         for i in range(self.number_hidden_layers):
@@ -50,10 +51,9 @@ class neural_network():
                 self.hidden.append(fully_connected_layer(self.hidden_layer_size, self.hidden_layer_size))
 
     def predict(self, input_values):
-        prediction = input_values.flatten()
-        for i in range(self.number_hidden_layers):
+        prediction = np.expand_dims(input_values.flatten(), axis=1)
+        for i, hidden_layer in enumerate(self.hidden_layers)+1:
             prediction = self.hidden[i].calculate_output(prediction)
             print(f"LAYER {i+1}")
-        prediction *= max(0, np.matmul(self.output_layer.weights, prediction) + self.hidden[i].bias)
         prediction = softmax(prediction)
         return prediction

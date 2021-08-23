@@ -42,6 +42,7 @@ criterion = cross_entropy_loss
 nn = neural_network(IMAGE_SIZE**2, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE)
 
 prediction = nn.predict(image)
+print(prediction)
 
 # %%
 for epoch in range(50):  # loop over the dataset multiple times
