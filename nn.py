@@ -50,7 +50,23 @@ gradients = {}
 g = loss
 gradients[len(nn.number_hidden_layers)] = g
 
+i = 1
 for l in reversed(nn.hidden):
+
+    act_prev_l = 
+    # WEIGHTS GRADIENT AT EACH LAYER
+    # activation of previous layer * 
+    # derivative of non-lineariry of z (w*a(l-1)+ b) *
+    # derivative of the cost funtion of current activation
+    gradients[len(nn.number_hidden_layers)-i]["w"] = 
+
+    # BIAS GRADIENT AT EACH LAYER
+    # 1 * 
+    # derivative of non-lineariry of z (w*a(l-1)+ b) *
+    # derivative of the cost funtion of current activation
+    gradients[len(nn.number_hidden_layers)-i]["b"] = 
+ 
+
     g = g * 
 
 
