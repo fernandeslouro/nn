@@ -41,7 +41,7 @@ criterion = mse
 #optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 nn = neural_network(IMAGE_SIZE**2, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE)
-outputs = nn.predict(image)
+outputs, activations = nn.predict(image)
 loss = criterion(outputs, label)
 # %%
 loss
@@ -53,7 +53,7 @@ gradients[len(nn.number_hidden_layers)] = g
 i = 1
 for l in reversed(nn.hidden):
 
-    act_prev_l = 
+    act_prev_l = activations[-i]
     # WEIGHTS GRADIENT AT EACH LAYER
     # activation of previous layer * 
     # derivative of non-lineariry of z (w*a(l-1)+ b) *
@@ -68,6 +68,7 @@ for l in reversed(nn.hidden):
  
 
     g = g * 
+    i += 1
 
 
 
