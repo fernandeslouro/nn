@@ -3,7 +3,7 @@
 import numpy as np
 import torch
 import torchvision
-from utilities import mse, neural_network
+from utilities import mse, neural_network, relu_derivative
 
 %load_ext autoreload
 %autoreload 2
@@ -54,17 +54,20 @@ i = 1
 for l in reversed(nn.hidden):
 
     act_prev_l = activations[-i]
+    der_nonlin_z = relu_derivative(activations[-i+1])
+    der_cf_current_act = 
     # WEIGHTS GRADIENT AT EACH LAYER
     # activation of previous layer * 
     # derivative of non-lineariry of z (w*a(l-1)+ b) *
     # derivative of the cost funtion of current activation
-    gradients[len(nn.number_hidden_layers)-i]["w"] = 
+    gradients[len(nn.number_hidden_layers)-i]["w"] = act_prev_l * der_nonlin_z * der_cf_current_act
 
     # BIAS GRADIENT AT EACH LAYER
     # 1 * 
     # derivative of non-lineariry of z (w*a(l-1)+ b) *
     # derivative of the cost funtion of current activation
-    gradients[len(nn.number_hidden_layers)-i]["b"] = 
+    gradients[len(nn.number_hidden_layers)-i]["b"] = der_nonlin_z * der_cf_current_act
+
  
 
     g = g * 
