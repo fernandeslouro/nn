@@ -46,31 +46,32 @@ loss = criterion(outputs, label)
 # %%
 loss
 
-gradients = {}
 g = loss
-gradients[len(nn.number_hidden_layers)] = g
-
+#gradients[nn.number_hidden_layers] = g
+wb_grad = [g]
 i = 1
-for l in reversed(nn.hidden):
+for k in reversed(nn.hidden):
 
-    act_prev_l = activations[-i]
-    der_nonlin_z = relu_derivative(activations[-i+1])
-    der_cf_current_act = 
+    # Convert the gradient on the layer’s output into a gradient into the pre-
+    # nonlinearity activation (element-wise multiplication if f is element-wise)
+    g = g * relu_derivative(activations[k])
+    
+    act_prev_l = activations[k]
+    der_nonlin_z = relu_derivative(activations[k])
     # WEIGHTS GRADIENT AT EACH LAYER
     # activation of previous layer * 
     # derivative of non-lineariry of z (w*a(l-1)+ b) *
-    # derivative of the cost funtion of current activation
-    gradients[len(nn.number_hidden_layers)-i]["w"] = act_prev_l * der_nonlin_z * der_cf_current_act
+    # derivative of the cost funtion of current activation - gradient of next layer
+    weight_gradients = g * wb
 
     # BIAS GRADIENT AT EACH LAYER
     # 1 * 
     # derivative of non-lineariry of z (w*a(l-1)+ b) *
-    # derivative of the cost funtion of current activation
-    gradients[len(nn.number_hidden_layers)-i]["b"] = der_nonlin_z * der_cf_current_act
+    # derivative of the cost funtion of current activation - gradient of next layer
+    bias_gradients = g
 
- 
-
-    g = g * 
+    wb_grad.insert(0, np.array([weight_gradients, bias_gradients]))
+    #g = g * 
     i += 1
 
 
