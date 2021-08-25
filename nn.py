@@ -56,7 +56,7 @@ for k in reversed(nn.hidden):
     # nonlinearity activation (element-wise multiplication if f is element-wise)
     g = g * relu_derivative(activations[k])
     
-    act_prev_l = activations[k]
+    act_prev_l = activations[k, 0]
     der_nonlin_z = relu_derivative(activations[k])
     # WEIGHTS GRADIENT AT EACH LAYER
     # activation of previous layer * 
