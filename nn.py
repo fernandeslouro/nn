@@ -55,14 +55,11 @@ i = 1
 
 for k in reversed(nn.hidden):
     print(i)
-    print(g.shape)
     # Convert the gradient on the layer’s output into a gradient into the pre-
     # nonlinearity activation (element-wise multiplication if f is element-wise)
 
-    print(activations[i-i].shape)
-    g = g * relu_derivative(activations[i-1])
+    #g = np.elementwise(g, relu_derivative(activations[i-1]))
 
-    print(g.shape)
     # Compute gradients on weights and biases 
     act_prev_l = activations[i-1]
     der_nonlin_z = relu_derivative(np.maximum(0, activations[i-1]))
@@ -70,7 +67,7 @@ for k in reversed(nn.hidden):
     # activation of previous layer * 
     # derivative of non-lineariry of z (w*a(l-1)+ b) *
     # derivative of the cost funtion of current activation - gradient of next layer
-    weight_gradients = g * activations[i-1]
+    weight_gradients = g * np.transpose(activations[i-2])
 
     # BIAS GRADIENT AT EACH LAYER
     # 1 * 
