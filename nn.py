@@ -43,7 +43,6 @@ nn = neural_network(IMAGE_SIZE**2, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAY
 outputs, activations = nn.predict(image)
 loss = criterion(outputs, label)
 # %%
-
 # Let G be the gradient on the unnormalized log probabilities 
 # U(2) provided by the cross_entropy operation
 g = loss
@@ -52,14 +51,14 @@ wb_grad = [g]
 i = 1
 
 
-
+# backprop to get gradients
 for k in reversed(nn.hidden):
     print(i)
     # Convert the gradient on the layer’s output into a gradient into the pre-
     # nonlinearity activation (element-wise multiplication if f is element-wise)
 
-    #g = np.elementwise(g, relu_derivative(activations[i-1]))
-
+    g = np.multiply(g, relu_derivative(activations[i-1]))
+    print(g)
     # Compute gradients on weights and biases 
     act_prev_l = activations[i-1]
     der_nonlin_z = relu_derivative(np.maximum(0, activations[i-1]))
@@ -68,6 +67,7 @@ for k in reversed(nn.hidden):
     # derivative of non-lineariry of z (w*a(l-1)+ b) *
     # derivative of the cost funtion of current activation - gradient of next layer
     weight_gradients = g * np.transpose(activations[i-2])
+    print(weight_gradients)
 
     # BIAS GRADIENT AT EACH LAYER
     # 1 * 
@@ -75,9 +75,17 @@ for k in reversed(nn.hidden):
     # derivative of the cost funtion of current activation - gradient of next layer
     bias_gradients = g
 
+
     wb_grad.insert(0, np.array([weight_gradients, bias_gradients]))
-    #g = g * 
     i += 1
+
+
+# make gradient update
+for i, layer in enumerate(nn.hidden):
+    if i>0:
+        layer.weights += wb_grad[i-1][0]
+        layer.bias += wb_grad[i-1][1]
+
 
 
 '''
@@ -104,3 +112,9 @@ for epoch in range(50):  # loop over the dataset multiple times
 '''
 
 # %%
+
+
+a = np.array([2, 4])
+b = np.array([2, 4])
+
+np.matmul(a, b)
