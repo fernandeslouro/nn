@@ -1,5 +1,4 @@
 # %%
-
 import numpy as np
 import torch
 import torchvision
@@ -10,7 +9,7 @@ from utilities import mse, neural_network, relu_derivative
 
 IMAGE_SIZE = 28
 OUTPUT_SIZE = 10
-NUMBER_HIDDEN_LAYERS = 3
+NUMBER_HIDDEN_LAYERS = 7
 HIDDEN_LAYER_SIZE = 100
 BATCH_SIZE = 10
 
@@ -44,25 +43,34 @@ nn = neural_network(IMAGE_SIZE**2, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAY
 outputs, activations = nn.predict(image)
 loss = criterion(outputs, label)
 # %%
-loss
 
+# Let G be the gradient on the unnormalized log probabilities 
+# U(2) provided by the cross_entropy operation
 g = loss
 #gradients[nn.number_hidden_layers] = g
 wb_grad = [g]
 i = 1
-for k in reversed(nn.hidden):
 
+
+
+for k in reversed(nn.hidden):
+    print(i)
+    print(g.shape)
     # Convert the gradient on the layer’s output into a gradient into the pre-
     # nonlinearity activation (element-wise multiplication if f is element-wise)
-    g = g * relu_derivative(activations[k])
-    
-    act_prev_l = activations[k, 0]
-    der_nonlin_z = relu_derivative(activations[k])
+
+    print(activations[i-i].shape)
+    g = g * relu_derivative(activations[i-1])
+
+    print(g.shape)
+    # Compute gradients on weights and biases 
+    act_prev_l = activations[i-1]
+    der_nonlin_z = relu_derivative(np.maximum(0, activations[i-1]))
     # WEIGHTS GRADIENT AT EACH LAYER
     # activation of previous layer * 
     # derivative of non-lineariry of z (w*a(l-1)+ b) *
     # derivative of the cost funtion of current activation - gradient of next layer
-    weight_gradients = g * wb
+    weight_gradients = g * activations[i-1]
 
     # BIAS GRADIENT AT EACH LAYER
     # 1 * 
@@ -75,42 +83,7 @@ for k in reversed(nn.hidden):
     i += 1
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# %%
+'''
 for epoch in range(50):  # loop over the dataset multiple times
     running_loss = 0.0
     for i, data in enumerate(train_loader, 0):
@@ -131,6 +104,6 @@ for epoch in range(50):  # loop over the dataset multiple times
 
     print(f"==== EPOCH LOSS: {running_loss/(i+1)}")
 
-
+'''
 
 # %%
