@@ -2,7 +2,7 @@
 import numpy as np
 import torch
 import torchvision
-from utilities import mse, neural_network, relu_derivative
+from utilities import cross_entropy_loss, mse, neural_network, relu_derivative
 
 %load_ext autoreload
 %autoreload 2
@@ -36,7 +36,7 @@ example = iter(train_loader).next()
 # The backpropagation algorithm works by computing the gradient of the loss function with respect to each weight by the chain rule, computing the gradient one layer at a time, iterating backward from the last layer to avoid redundant calculations of intermediate terms in the chain rule
 image = example[0][0][0].numpy() # it's a 6
 label = np.array([0, 0, 0, 0, 0, 0, 1, 0, 0, 0])
-criterion = mse
+criterion = cross_entropy_loss
 #optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 nn = neural_network(IMAGE_SIZE**2, OUTPUT_SIZE, NUMBER_HIDDEN_LAYERS, HIDDEN_LAYER_SIZE)

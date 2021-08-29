@@ -1,8 +1,11 @@
 import numpy as np
 
- 
-def cross_entropy_loss(batch_truth, batch_predictions):
-    return -1/len(batch_truth) * np.inner((batch_truth, np.log(batch_predictions)))  
+# square error is usually a poor choice for a classification task such as MNIST 
+# this is the cross entropy loss
+
+def cross_entropy_loss(truth, predictions):
+    #return -1/len(batch_truth) * np.inner((batch_truth, np.log(batch_predictions)))  
+    return -sum(truth*np.log(predictions))
 
 def mse(pred, label):
     return np.square(pred-label).mean()
