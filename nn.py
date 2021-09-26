@@ -4,8 +4,8 @@ import torch
 import torchvision
 from utilities import cross_entropy_loss, neural_network, relu_derivative
 
-#%load_ext autoreload
-#%autoreload 2
+%load_ext autoreload
+%autoreload 2
 
 IMAGE_SIZE = 28
 OUTPUT_SIZE = 10
@@ -41,8 +41,6 @@ test_loader = torch.utils.data.DataLoader(
                 shuffle=False)
 
 example = iter(train_loader).next()
-# %%
-print("ay")
 
 # %%
 # The backpropagation algorithm works by computing the gradient of the loss
