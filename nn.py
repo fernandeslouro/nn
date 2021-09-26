@@ -41,6 +41,8 @@ test_loader = torch.utils.data.DataLoader(
                 shuffle=False)
 
 example = iter(train_loader).next()
+# %%
+print("ay")
 
 # %%
 # The backpropagation algorithm works by computing the gradient of the loss

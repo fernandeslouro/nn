@@ -76,7 +76,7 @@ class neural_network():
                     self.hidden_layer_size))
 
     def predict(self, input_values):
-        prediction = np.expand_dims(input_values.flatten(), axis=1)
+        layer_output = np.expand_dims(input_values.flatten(), axis=1)
         activations = []
         for hidden_layer in self.hidden:
             layer_output, activation = hidden_layer.calculate_output(prediction)
