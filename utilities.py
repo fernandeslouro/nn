@@ -83,3 +83,4 @@ class neural_network():
             activations.append(np.array([prediction, activation]))
         prediction = softmax(prediction)
         return prediction, activations
+

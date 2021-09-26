@@ -2,10 +2,10 @@
 import numpy as np
 import torch
 import torchvision
-from utilities import cross_entropy_loss, mse, neural_network, relu_derivative
+from utilities import cross_entropy_loss, neural_network, relu_derivative
 
-%load_ext autoreload
-%autoreload 2
+#%load_ext autoreload
+#%autoreload 2
 
 IMAGE_SIZE = 28
 OUTPUT_SIZE = 10
@@ -67,35 +67,41 @@ loss = criterion(outputs, label)
 # U(2) provided by the cross_entropy operation
 g = loss
 # gradients[nn.number_hidden_layers] = g
-wb_grad = [g]
+mb_grad = [g]
 i = 1
 
 
 # backprop to get gradients
 for k in reversed(nn.hidden):
-    print(i)
-    # Convert the gradient on the layer’s output into a gradient into the pre-
-    # nonlinearity activation, element-wise multiplication if f is element-wise
 
-    g = np.multiply(g, relu_derivative(activations[i-1]))
-    print(g)
-    # Compute gradients on weights and biases
-    act_prev_l = activations[i-1]
-    der_nonlin_z = relu_derivative(np.maximum(0, activations[i-1]))
-    # WEIGHTS GRADIENT AT EACH LAYER
-    # activation of previous layer *
-    # derivative of non-lineariry of z (w*a(l-1)+ b) *
-    # derivative of the cost funtion
-    # of current activation - gradient of next layer
-    weight_gradients = g * np.transpose(activations[i-2])
-    print(weight_gradients)
+    # for the last layer https://stackoverflow.com/questions/16740269/issue-with-gradient-calculation-in-a-neural-network-stuck-at-7-error-in-mnist
+    if i == 1:
+        delta = outputs - label
+        g = np.dot(delta, predictions[-1])
+    else:
+        print(i)
+        # Convert the gradient on the layer’s output into a gradient into the pre-
+        # nonlinearity activation, element-wise multiplication if f is element-wise
 
-    # BIAS GRADIENT AT EACH LAYER
-    # 1 *
-    # derivative of non-lineariry of z (w*a(l-1)+ b) *
-    # derivative of the cost funtion of current
-    # activation - gradient of next layer
-    bias_gradients = g
+        g = np.multiply(g, relu_derivative(activations[i-1]))
+        print(g)
+        # Compute gradients on weights and biases
+        act_prev_l = activations[i-1]
+        der_nonlin_z = relu_derivative(np.maximum(0, activations[i-1]))
+        # WEIGHTS GRADIENT AT EACH LAYER
+        # activation of previous layer *
+        # derivative of non-lineariry of z (w*a(l-1)+ b) *
+        # derivative of the cost funtion
+        # of current activation - gradient of next layer
+        weight_gradients = g * np.transpose(activations[i-2])
+        print(weight_gradients)
+
+        # BIAS GRADIENT AT EACH LAYER
+        # 1 *
+        # derivative of non-lineariry of z (w*a(l-1)+ b) *
+        # derivative of the cost funtion of current
+        # activation - gradient of next layer
+        bias_gradients = g
 
     wb_grad.insert(0, np.array([weight_gradients, bias_gradients]))
     i += 1
