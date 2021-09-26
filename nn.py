@@ -77,7 +77,8 @@ for k in reversed(nn.hidden):
     # for the last layer https://stackoverflow.com/questions/16740269/issue-with-gradient-calculation-in-a-neural-network-stuck-at-7-error-in-mnist
     if i == 1:
         delta = outputs - label
-        g = np.dot(delta, predictions[-1])
+        g = np.multiply(g, activations[-1])
+        print(g.shape)
     else:
         print(i)
         # Convert the gradient on the layer’s output into a gradient into the pre-

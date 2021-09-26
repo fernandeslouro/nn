@@ -79,8 +79,8 @@ class neural_network():
         prediction = np.expand_dims(input_values.flatten(), axis=1)
         activations = []
         for hidden_layer in self.hidden:
-            prediction, activation = hidden_layer.calculate_output(prediction)
-            activations.append(np.array([prediction, activation]))
-        prediction = softmax(prediction)
+            layer_output, activation = hidden_layer.calculate_output(prediction)
+            activations.append(np.array([layer_output, activation]))
+        prediction = softmax(layer_output)
         return prediction, activations
 
